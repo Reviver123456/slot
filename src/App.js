@@ -16,6 +16,7 @@ const SlotMachine = () => {
 
   const [slots, setSlots] = useState(Array.from({ length: 3 }, () => symbols[0]));
   const [winner, setWinner] = useState(false);
+  const [score, setScore] = useState(0);
 
   const spin = () => {
     setWinner(false);
@@ -27,24 +28,25 @@ const SlotMachine = () => {
   const checkWinner = (newSlots) => {
     if (newSlots[0] === newSlots[1] && newSlots[1] === newSlots[2]) {
       setWinner(true);
+      setScore(score + 5);
     }
   };
 
   return (
     <div className='box'>
-    <div className="slot-machine">
-      <div className="slot-row">
-        {slots.map((symbol, index) => (
-          <div key={index} className="slot">
-            <img src={symbol} alt={`Slot ${index}`} />
-          </div>
-        ))}
+      <div className="slot-machine">
+        <div className="slot-row">
+          {slots.map((symbol, index) => (
+            <div key={index} className="slot">
+              <img src={symbol} alt={`Slot ${index}`} />
+            </div>
+          ))}
+        </div>
+        <button onClick={spin} className='bt-spin'>หมุน</button>
+        <div>เครดิต: {score}</div>
+        {winner && <h2 className='win-t'>คุณถูกรางวัล</h2>}
       </div>
-      <button onClick={spin} className='bt-spin'>Spin</button>
-      {winner && <h2 className='win-t'>คุณถูกรางวัล</h2>}
     </div>
-    </div>
-
   );
 };
 
