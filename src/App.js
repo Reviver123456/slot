@@ -15,20 +15,51 @@ const SlotMachine = () => {
   ];
 
   const [slots, setSlots] = useState(Array.from({ length: 3 }, () => symbols[0]));
-  const [winner, setWinner] = useState(false);
+  const [winners, setWinners] = useState([false, false, false]);
   const [score, setScore] = useState(0);
 
   const spin = () => {
-    setWinner(false);
+    setWinners([false, false, false]);
     const newSlots = Array.from({ length: 3 }, () => symbols[Math.floor(Math.random() * symbols.length)]);
     setSlots(newSlots);
-    checkWinner(newSlots);
+    checkWinners(newSlots);
   };
 
-  const checkWinner = (newSlots) => {
-    if (newSlots[0] === newSlots[1] && newSlots[1] === newSlots[2]) {
-      setWinner(true);
-      setScore(score + 5);
+  const checkWinners = (newSlots) => {
+    const firstSymbol = newSlots[0];
+    if (newSlots.every(symbol => symbol === firstSymbol)) {
+      const symbolScore = getSymbolScore(firstSymbol);
+      if (symbolScore > 0) {
+        setScore(score + symbolScore);
+        setWinners([true, true, true]);
+        return;
+      }
+    }
+    setWinners([false, false, false]);
+  };
+
+  const getSymbolScore = (symbol) => {
+    switch(symbol) {
+      case symbols[0]:
+        return 5;
+      case symbols[1]:
+        return 10;
+      case symbols[2]:
+        return 20;
+        case symbols[3]:
+          return 2;
+        case symbols[4]:
+          return 3;
+        case symbols[5]:
+          return 4;
+          case symbols[6]:
+            return 5;
+          case symbols[7]:
+            return 11;
+          case symbols[8]:
+            return 25;
+      default:
+        return 0;
     }
   };
 
@@ -37,14 +68,13 @@ const SlotMachine = () => {
       <div className="slot-machine">
         <div className="slot-row">
           {slots.map((symbol, index) => (
-            <div key={index} className="slot">
+            <div key={index} className={`slot ${winners[index] ? 'winner' : ''}`}>
               <img src={symbol} alt={`Slot ${index}`} />
             </div>
           ))}
         </div>
         <button onClick={spin} className='bt-spin'>หมุน</button>
-        <div className='money-t'>เครดิต: {score}</div>
-        {winner && <h2 className='win-t'>คุณถูกรางวัล</h2>}
+        <div className='money-t'>คะแนน: {score}</div>
       </div>
     </div>
   );
