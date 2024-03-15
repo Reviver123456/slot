@@ -43,7 +43,7 @@ const SlotMachine = () => {
           ))}
         </div>
         <button onClick={spin} className='bt-spin'>หมุน</button>
-        <div>เครดิต: {score}</div>
+        <div className='money-t'>เครดิต: {score}</div>
         {winner && <h2 className='win-t'>คุณถูกรางวัล</h2>}
       </div>
     </div>
